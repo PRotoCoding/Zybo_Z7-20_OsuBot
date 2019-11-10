@@ -2,6 +2,7 @@
 #include <ap_axi_sdata.h>
 
 #define NUMBER_OF_NODELINES 7
+#define NUMBER_OF_HORIZONTAL_LINES 2
 #define ENABLED(x) ((enable >> (x + 1)) & 0x1)
 #define ENABLED_HOR (enable & 0x1)
 
@@ -14,10 +15,9 @@
 typedef ap_axiu<24,2,5,6> intSdCh;
 
 void nodeDetector(hls::stream<intSdCh> &inStream, hls::stream<intSdCh> &outStream, ap_int<NUMBER_OF_NODELINES+1> enable,
-		ap_int<16> pos[NUMBER_OF_NODELINES], ap_int<1> out[NUMBER_OF_NODELINES], ap_int<1> out2[NUMBER_OF_NODELINES], ap_int<16> horizontalPos)
+		ap_int<16> pos[NUMBER_OF_NODELINES], ap_int<NUMBER_OF_NODELINES> out[NUMBER_OF_HORIZONTAL_LINES], ap_int<16> horizontalPos[NUMBER_OF_HORIZONTAL_LINES])
 {
 #pragma HLS ARRAY_PARTITION variable=out complete dim=1
-#pragma HLS ARRAY_PARTITION variable=out2 complete dim=1
 #pragma HLS INTERFACE axis port=outStream
 #pragma HLS INTERFACE axis port=inStream
 #pragma HLS INTERFACE s_axilite port=pos bundle=CRTL_BUS
@@ -26,80 +26,72 @@ void nodeDetector(hls::stream<intSdCh> &inStream, hls::stream<intSdCh> &outStrea
 #pragma HLS INTERFACE s_axilite port=return bundle=CRTL_BUS
 #pragma HLS INTERFACE ap_ctrl_none port=return bundle=CTRL_BUS
 #pragma HLS INTERFACE ap_none port=out
-#pragma HLS INTERFACE ap_none port=out2
 #pragma HLS ARRAY_PARTITION variable=pos complete dim=1
+#pragma HLS ARRAY_PARTITION variable=horizontalPos complete dim=1
 
-	int pixelCnt = 0;
-	int rowCnt = 0;
-	int columnCnt = 0;
+	ap_int<32> pixelCnt = 0;
+	ap_int<16> rowCnt = 0;
+	ap_int<16> columnCnt = 0;
 
-	static bool detections[NUMBER_OF_NODELINES] = {0,0,0,0,0,0,0};
-	static bool detections2[NUMBER_OF_NODELINES] = {0,0,0,0,0,0,0};
-
-	for(int i = 0; i < (720*1280); i++) {
+	nodeDetector_pipelining:for(int i = 0; i < (720*1280); i++) {
 //#pragma HLS PIPELINE
+
+		ap_int<1> drawBlue = 0;
+		ap_int<1> horizontalMatch = 0;
+		ap_int<1> isNote = 0;
+		ap_int<1> horizontalIndex = 0;
+		ap_int<NUMBER_OF_NODELINES> detectionOut[NUMBER_OF_HORIZONTAL_LINES] = {0, 0};
+		//detectionOut[0] = out[0];
 
 		intSdCh valIn = inStream.read();
 		intSdCh valOut;
 
 		// Start Of Frame
 		if(valIn.user == 1) {
-			pixelCnt = 0;
 			columnCnt = 0;
 			rowCnt = 0;
 		}
-		else {
-			pixelCnt++;
+
+		// Is this pixel potentially a note?
+		if(valIn.data.range(23, 16) > 100 || valIn.data.range(7, 0) > 100 || valIn.data.range(15, 8) > 100) {
+			isNote = 1;
 		}
 
-		// Logic
-		if((ENABLED(0) && columnCnt == pos[0]) || (ENABLED(1) && columnCnt == pos[1]) || (ENABLED(2) && columnCnt == pos[2]) || (ENABLED(3) && columnCnt == pos[3]) || (ENABLED(4) && columnCnt == pos[4]) || (ENABLED(5) && columnCnt == pos[5]) || (ENABLED(6) && columnCnt == pos[6]))
-					valOut.data = 0x00FF00;
-		else if((ENABLED_HOR && (rowCnt == horizontalPos)) || (ENABLED_HOR && (rowCnt == horizontalPos + 1)) ) {
+		// Is this pixel on the horizontal line?
+		if(enable.get_bit(7)) {
+			for(int j = 0; j < NUMBER_OF_HORIZONTAL_LINES; j++) {
+				if(rowCnt == horizontalPos[j]) {
+					horizontalIndex.set_bit(0, j);
+					drawBlue.set_bit(0, 1);
+					horizontalMatch.set_bit(0, 1);
+				}
+			}
+		}
+
+		for(int j = 0; j < NUMBER_OF_NODELINES; j++) {
+			ap_int<1> verticalMatch = 0;
+			if(enable.get_bit(j)) {
+				// Is this pixel on the vertical line?
+				if(columnCnt == pos[j]) {
+					verticalMatch.set_bit(0, 1);
+					drawBlue.set_bit(0, 1);
+				}
+			}
+			if(verticalMatch && horizontalMatch)
+			{
+				detectionOut[horizontalIndex].set_bit(j, isNote);
+			}
+		}
+
+		if(drawBlue) {
 			valOut.data = 0x00FF00;
 		}
-		else
-		{
+		else {
 			valOut.data = valIn.data;
 		}
 
-		for(int j = 0; j < NUMBER_OF_NODELINES; j++) {
-			if(ENABLED(j)) {
-				if(rowCnt == horizontalPos && columnCnt == pos[j])
-				{
-					if(RED(valIn.data) > 100 || GREEN(valIn.data) > 100 || BLUE(valIn.data) > 100) {
-						detections[j] = 1;
-					}
-					else
-					{
-						detections[j] = 0;
-					}
-				}
-			}
-			else {
-				detections[j] = 0;
-			}
-			out[j] = detections[j];
-		}
-
-		for(int j = 0; j < NUMBER_OF_NODELINES; j++) {
-			if(ENABLED(j)) {
-				if((rowCnt == (horizontalPos + 1)) && columnCnt == pos[j])
-				{
-					if(RED(valIn.data) > 100 || GREEN(valIn.data) > 100 || BLUE(valIn.data) > 100) {
-						detections2[j] = 1;
-					}
-					else
-					{
-						detections2[j] = 0;
-					}
-				}
-			}
-			else {
-				detections2[j] = 0;
-			}
-			out2[j] = detections2[j];
-		}
+		out[0] = detectionOut[0];
+		out[1] = detectionOut[1];
 
 		// End Of Line
 		if(valIn.last == 1) {

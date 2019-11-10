@@ -1,9 +1,0 @@
-vhdl xil_defaultlib "AESL_sim_pkg.vhd"
-sv work "glbl.v"
-vhdl xil_defaultlib "AESL_axi_slave_CRTL_BUS.vhd"
-vhdl xil_defaultlib "AESL_axi_s_inStream.vhd"
-vhdl xil_defaultlib "AESL_axi_s_outStream.vhd"
-vhdl xil_defaultlib "nodeDetector.autotb.vhd"
-vhdl xil_defaultlib "nodeDetector.vhd"
-vhdl xil_defaultlib "nodeDetector_CRTL_BUS_s_axi.vhd"
-

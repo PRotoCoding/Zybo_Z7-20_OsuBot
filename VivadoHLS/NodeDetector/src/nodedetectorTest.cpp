@@ -7,6 +7,7 @@ typedef ap_axiu<24,2,5,6> intSdCh;
 #define PICTURE_WIDTH 1280
 #define PICTURE_HEIGHT 720
 #define PICTURE_PIXEL_COUNT PICTURE_WIDTH * PICTURE_HEIGHT
+
 void nodeDetector(hls::stream<intSdCh> &inStream, hls::stream<intSdCh> &outStream, ap_int<NUMBER_OF_NODELINES+1> enable, ap_int<16> pos0, ap_int<16> pos1, ap_int<16> pos2, ap_int<16> pos3, ap_int<16> pos4, ap_int<16> pos5, ap_int<16> pos6, ap_int<16> horizontalPos, ap_int<4>* detectionOut);
 int main() {
 	hls::stream<intSdCh> inputStream;

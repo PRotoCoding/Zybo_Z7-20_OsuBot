@@ -5,7 +5,8 @@
     <file name="NodeDetector/src/nodedetector.cpp" sc="0" tb="false" cflags=""/>
   </files>
   <solutions>
-    <solution name="solution1" status="active"/>
+    <solution name="SolutionWithoutPipelining" status="active"/>
+    <solution name="SolutionWithPipelining" status="inactive"/>
   </solutions>
   <includePaths/>
   <libraryPaths/>

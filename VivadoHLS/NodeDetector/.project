@@ -37,9 +37,14 @@
 			<location>G:/Vivado_Projects/Zybo_Z7-20_OsuBot/VivadoHLS/NodeDetector/.apc/.tb</location>
 		</link>
 		<link>
-			<name>solution1/constraints</name>
+			<name>SolutionWithPipelining/constraints</name>
 			<type>2</type>
-			<location>G:/Vivado_Projects/Zybo_Z7-20_OsuBot/VivadoHLS/NodeDetector/solution1/.tcls</location>
+			<location>G:/Vivado_Projects/Zybo_Z7-20_OsuBot/VivadoHLS/NodeDetector/SolutionWithPipelining/.tcls</location>
+		</link>
+		<link>
+			<name>SolutionWithoutPipelining/constraints</name>
+			<type>2</type>
+			<location>G:/Vivado_Projects/Zybo_Z7-20_OsuBot/VivadoHLS/NodeDetector/SolutionWithoutPipelining/.tcls</location>
 		</link>
 		<link>
 			<name>source/nodedetector.cpp</name>
@@ -52,19 +57,34 @@
 			<location>G:/Vivado_Projects/Zybo_Z7-20_OsuBot/VivadoHLS/NodeDetector/src/nodedetectorTest.cpp</location>
 		</link>
 		<link>
-			<name>solution1/constraints/.xml.directive</name>
+			<name>SolutionWithPipelining/constraints/.xml.directive</name>
 			<type>1</type>
-			<location>G:/Vivado_Projects/Zybo_Z7-20_OsuBot/VivadoHLS/NodeDetector/solution1/solution1.directive</location>
+			<location>G:/Vivado_Projects/Zybo_Z7-20_OsuBot/VivadoHLS/NodeDetector/SolutionWithPipelining/SolutionWithPipelining.directive</location>
 		</link>
 		<link>
-			<name>solution1/constraints/directives.tcl</name>
+			<name>SolutionWithPipelining/constraints/directives.tcl</name>
 			<type>1</type>
-			<location>G:/Vivado_Projects/Zybo_Z7-20_OsuBot/VivadoHLS/NodeDetector/solution1/directives.tcl</location>
+			<location>G:/Vivado_Projects/Zybo_Z7-20_OsuBot/VivadoHLS/NodeDetector/SolutionWithPipelining/directives.tcl</location>
 		</link>
 		<link>
-			<name>solution1/constraints/script.tcl</name>
+			<name>SolutionWithPipelining/constraints/script.tcl</name>
 			<type>1</type>
-			<location>G:/Vivado_Projects/Zybo_Z7-20_OsuBot/VivadoHLS/NodeDetector/solution1/script.tcl</location>
+			<location>G:/Vivado_Projects/Zybo_Z7-20_OsuBot/VivadoHLS/NodeDetector/SolutionWithPipelining/script.tcl</location>
+		</link>
+		<link>
+			<name>SolutionWithoutPipelining/constraints/.xml.directive</name>
+			<type>1</type>
+			<location>G:/Vivado_Projects/Zybo_Z7-20_OsuBot/VivadoHLS/NodeDetector/SolutionWithoutPipelining/SolutionWithoutPipelining.directive</location>
+		</link>
+		<link>
+			<name>SolutionWithoutPipelining/constraints/directives.tcl</name>
+			<type>1</type>
+			<location>G:/Vivado_Projects/Zybo_Z7-20_OsuBot/VivadoHLS/NodeDetector/SolutionWithoutPipelining/directives.tcl</location>
+		</link>
+		<link>
+			<name>SolutionWithoutPipelining/constraints/script.tcl</name>
+			<type>1</type>
+			<location>G:/Vivado_Projects/Zybo_Z7-20_OsuBot/VivadoHLS/NodeDetector/SolutionWithoutPipelining/script.tcl</location>
 		</link>
 	</linkedResources>
 </projectDescription>

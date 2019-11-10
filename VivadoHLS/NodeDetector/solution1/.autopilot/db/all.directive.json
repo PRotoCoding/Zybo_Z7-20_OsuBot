@@ -1,9 +1,0 @@
-{"sourceFile": [{
-      "name": "",
-      "directive": [{
-          "functionName": "nodeDetector",
-          "label": "nodeDetector_label0",
-          "functionLabel": "",
-          "pragma": {"name": "UNROLL"}
-        }]
-    }]}
