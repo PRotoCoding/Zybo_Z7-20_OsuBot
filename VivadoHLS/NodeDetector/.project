@@ -52,6 +52,11 @@
 			<location>G:/Vivado_Projects/Zybo_Z7-20_OsuBot/VivadoHLS/NodeDetector/src/nodedetector.cpp</location>
 		</link>
 		<link>
+			<name>source/nodedetector.h</name>
+			<type>1</type>
+			<location>G:/Vivado_Projects/Zybo_Z7-20_OsuBot/VivadoHLS/NodeDetector/src/nodedetector.h</location>
+		</link>
+		<link>
 			<name>testbench/nodedetectorTest.cpp</name>
 			<type>1</type>
 			<location>G:/Vivado_Projects/Zybo_Z7-20_OsuBot/VivadoHLS/NodeDetector/src/nodedetectorTest.cpp</location>

@@ -1,8 +1,5 @@
-#include <hls_stream.h>
-#include <ap_axi_sdata.h>
+#include "nodedetector.h"
 
-#define NUMBER_OF_NODELINES 7
-#define NUMBER_OF_HORIZONTAL_LINES 2
 #define ENABLED(x) ((enable >> (x + 1)) & 0x1)
 #define ENABLED_HOR (enable & 0x1)
 
@@ -11,8 +8,6 @@
 #define BLUE(x) ((x >> 8) & 0xFF)
 
 #define DETECTION(x) if(RED(valIn.data) > 100 || GREEN(valIn.data) > 100 || BLUE(valIn.data) > 100) a |= (0x1 << x); else a &= (~(0x1 << x));
-
-typedef ap_axiu<24,2,5,6> intSdCh;
 
 void nodeDetector(hls::stream<intSdCh> &inStream, hls::stream<intSdCh> &outStream, ap_int<NUMBER_OF_NODELINES+1> enable,
 		ap_int<16> pos[NUMBER_OF_NODELINES], ap_int<NUMBER_OF_NODELINES> out[NUMBER_OF_HORIZONTAL_LINES], ap_int<16> horizontalPos[NUMBER_OF_HORIZONTAL_LINES])
@@ -23,19 +18,19 @@ void nodeDetector(hls::stream<intSdCh> &inStream, hls::stream<intSdCh> &outStrea
 #pragma HLS INTERFACE s_axilite port=pos bundle=CRTL_BUS
 #pragma HLS INTERFACE s_axilite port=enable bundle=CRTL_BUS
 #pragma HLS INTERFACE s_axilite port=horizontalPos bundle=CRTL_BUS
-#pragma HLS INTERFACE s_axilite port=return bundle=CRTL_BUS
 #pragma HLS INTERFACE ap_ctrl_none port=return bundle=CTRL_BUS
 #pragma HLS INTERFACE ap_none port=out
 #pragma HLS ARRAY_PARTITION variable=pos complete dim=1
 #pragma HLS ARRAY_PARTITION variable=horizontalPos complete dim=1
+#pragma HLS ARRAY_PARTITION variable=out complete dim=1
 
 	ap_int<32> pixelCnt = 0;
 	ap_int<16> rowCnt = 0;
 	ap_int<16> columnCnt = 0;
 
 	nodeDetector_pipelining:for(int i = 0; i < (720*1280); i++) {
-//#pragma HLS PIPELINE
-
+#pragma HLS dependence variable=out inter false
+#pragma HLS dependence variable=out intra false
 		ap_int<1> drawBlue = 0;
 		ap_int<1> horizontalMatch = 0;
 		ap_int<1> isNote = 0;
@@ -60,6 +55,7 @@ void nodeDetector(hls::stream<intSdCh> &inStream, hls::stream<intSdCh> &outStrea
 		// Is this pixel on the horizontal line?
 		if(enable.get_bit(7)) {
 			for(int j = 0; j < NUMBER_OF_HORIZONTAL_LINES; j++) {
+#pragma HLS UNROLL
 				if(rowCnt == horizontalPos[j]) {
 					horizontalIndex.set_bit(0, j);
 					drawBlue.set_bit(0, 1);
@@ -69,6 +65,7 @@ void nodeDetector(hls::stream<intSdCh> &inStream, hls::stream<intSdCh> &outStrea
 		}
 
 		for(int j = 0; j < NUMBER_OF_NODELINES; j++) {
+#pragma HLS UNROLL
 			ap_int<1> verticalMatch = 0;
 			if(enable.get_bit(j)) {
 				// Is this pixel on the vertical line?
@@ -77,21 +74,21 @@ void nodeDetector(hls::stream<intSdCh> &inStream, hls::stream<intSdCh> &outStrea
 					drawBlue.set_bit(0, 1);
 				}
 			}
-			if(verticalMatch && horizontalMatch)
+			if(verticalMatch.get_bit(0) && horizontalMatch.get_bit(0))
 			{
-				detectionOut[horizontalIndex].set_bit(j, isNote);
+				out[horizontalIndex].set_bit(j, isNote);
 			}
 		}
 
-		if(drawBlue) {
+		if(drawBlue.get_bit(0)) {
 			valOut.data = 0x00FF00;
 		}
 		else {
 			valOut.data = valIn.data;
 		}
 
-		out[0] = detectionOut[0];
-		out[1] = detectionOut[1];
+		//out[0] = detectionOut[0];
+		//out[1] = detectionOut[1];
 
 		// End Of Line
 		if(valIn.last == 1) {

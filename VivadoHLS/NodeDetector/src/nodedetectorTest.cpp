@@ -1,17 +1,30 @@
-#include <hls_stream.h>
-#include <ap_axi_sdata.h>
+#include "nodedetector.h"
 #include <stdio.h>
+#include <opencv2/opencv.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/core/mat.hpp>
 
-typedef ap_axiu<24,2,5,6> intSdCh;
-#define NUMBER_OF_NODELINES 7
-#define PICTURE_WIDTH 1280
-#define PICTURE_HEIGHT 720
-#define PICTURE_PIXEL_COUNT PICTURE_WIDTH * PICTURE_HEIGHT
+#define RED(x) ((x >> 8) & 0xFF)
+#define GREEN(x) ((x >> 16) & 0xFF)
+#define BLUE(x) ((x >> 0) & 0xFF)
 
-void nodeDetector(hls::stream<intSdCh> &inStream, hls::stream<intSdCh> &outStream, ap_int<NUMBER_OF_NODELINES+1> enable, ap_int<16> pos0, ap_int<16> pos1, ap_int<16> pos2, ap_int<16> pos3, ap_int<16> pos4, ap_int<16> pos5, ap_int<16> pos6, ap_int<16> horizontalPos, ap_int<4>* detectionOut);
+#define START_POINT 496
+#define LINE_WIDTH 45
+#define VERTICAL 200
+#define POSITION(x) START_POINT - LINE_WIDTH * x
+
 int main() {
+	cv::Mat originalPic = cv::imread("G:/Vivado_Projects/Zybo_Z7-20_OsuBot/VivadoHLS/NodeDetector/TestPictures/test1.jpg", CV_LOAD_IMAGE_UNCHANGED);
+	cv::Mat modifiedPic = cv::Mat(PICTURE_HEIGHT, PICTURE_WIDTH, CV_8UC3, cv::Scalar(0, 0, 0));
+
 	hls::stream<intSdCh> inputStream;
 	hls::stream<intSdCh> outputStream;
+
+	ap_int<NUMBER_OF_NODELINES+1> enable = 0xFF;
+	ap_int<16> pos[NUMBER_OF_NODELINES] = {POSITION(6), POSITION(5), POSITION(4), POSITION(3), POSITION(2), POSITION(1), POSITION(0)};
+	ap_int<NUMBER_OF_NODELINES> out[NUMBER_OF_HORIZONTAL_LINES] = {0, 0};
+	ap_int<16> horizontalPos[NUMBER_OF_HORIZONTAL_LINES] = {VERTICAL, VERTICAL + 1};
 
 	int randomArray[NUMBER_OF_NODELINES] = {0,0,0,0};
 	int error_flag = 0;
@@ -30,29 +43,33 @@ int main() {
 		valIn.id = 0;
 		valIn.dest = 0;
 
+		cv::Vec3b color = originalPic.at<cv::Vec3b>(cv::Point(i % PICTURE_WIDTH, i / PICTURE_WIDTH));
+		valIn.data = ((int) color.val[0] << 8) | ((int) color.val[1] << 16) | color.val[2];
 		inputStream << valIn;
 	}
 
-	nodeDetector(inputStream, outputStream, 360, 0, 0, 0, 0, 0, 0, 0, 0);
+	//nodeDetector(inputStream, outputStream, enable, pos, out, horizontalPos);
 	int greenCnt = 0;
 	int blueCnt = 0;
 	for (int row = 0; row < PICTURE_HEIGHT; row++) {
 		for (int col = 0; col < PICTURE_WIDTH; col++) {
 			intSdCh valOut;
+			nodeDetector(inputStream, outputStream, enable, pos, out, horizontalPos);
 			outputStream.read(valOut);
-			if(valOut.data == 0xF0FF00) {
-				printf("Blue in row %d, col %d\n", row, col);
+			cv::Vec3b color = cv::Vec3b(RED(valOut.data), GREEN(valOut.data), BLUE(valOut.data));
+			modifiedPic.at<cv::Vec3b>(cv::Point(col, row)) = color;
+			if(valOut.data == 0x00FF00) {
+				//printf("Blue in row %d, col %d\n", row, col);
 				blueCnt++;
-			}
-
-			if(valOut.data == 0x0000FF) {
-				printf("Green in row %d, col %d\n", row, col);
-				greenCnt++;
 			}
 		}
 	}
+	cv::imshow("modifiedPic", modifiedPic);
+	cv::imshow("originalPic", originalPic);
+	cv::waitKey(0);
+
 	printf("GreenCnt: %d, BlueCnt: %d\n", greenCnt, blueCnt);
-	if(!((greenCnt == PICTURE_HEIGHT - 1) && blueCnt == PICTURE_WIDTH)){
+	if(blueCnt != (PICTURE_WIDTH * NUMBER_OF_HORIZONTAL_LINES + PICTURE_HEIGHT * NUMBER_OF_NODELINES - NUMBER_OF_NODELINES * NUMBER_OF_HORIZONTAL_LINES)){
 		printf("**********************************************\n");
 		printf("FAIL: Output does not match the golden output!\n");
 		printf("**********************************************\n");
