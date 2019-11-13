@@ -10,7 +10,7 @@
 #define DETECTION(x) if(RED(valIn.data) > 100 || GREEN(valIn.data) > 100 || BLUE(valIn.data) > 100) a |= (0x1 << x); else a &= (~(0x1 << x));
 
 void nodeDetector(hls::stream<intSdCh> &inStream, hls::stream<intSdCh> &outStream, ap_int<NUMBER_OF_NODELINES+1> enable,
-		ap_int<16> pos[NUMBER_OF_NODELINES], ap_int<NUMBER_OF_NODELINES> out[NUMBER_OF_HORIZONTAL_LINES], ap_int<16> horizontalPos[NUMBER_OF_HORIZONTAL_LINES])
+		ap_int<16> pos[NUMBER_OF_NODELINES], bool out[NUMBER_OF_HORIZONTAL_LINES][NUMBER_OF_NODELINES], ap_int<16> horizontalPos[NUMBER_OF_HORIZONTAL_LINES])
 {
 #pragma HLS INTERFACE axis port=outStream
 #pragma HLS INTERFACE axis port=inStream
@@ -21,7 +21,7 @@ void nodeDetector(hls::stream<intSdCh> &inStream, hls::stream<intSdCh> &outStrea
 //#pragma HLS INTERFACE ap_none port=out
 #pragma HLS ARRAY_PARTITION variable=pos complete dim=1
 #pragma HLS ARRAY_PARTITION variable=horizontalPos complete dim=1
-#pragma HLS ARRAY_PARTITION variable=out complete dim=1
+#pragma HLS ARRAY_PARTITION variable=out complete dim=0
 
 	ap_int<32> pixelCnt = 0;
 	ap_int<16> rowCnt = 0;
@@ -75,7 +75,7 @@ void nodeDetector(hls::stream<intSdCh> &inStream, hls::stream<intSdCh> &outStrea
 			for(int vert = 0; vert < NUMBER_OF_NODELINES; vert++) {
 				if(verticalMatch[vert].get_bit(0) && horizontalMatch[hor].get_bit(0))
 				{
-					out[hor].set_bit(vert, isNote);
+					out[hor][vert] = isNote;
 				}
 			}
 		}
