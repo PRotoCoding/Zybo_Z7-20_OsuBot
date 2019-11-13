@@ -59,6 +59,8 @@
                                     									
                                     <listOptionValue builtIn="false" value="G:/Xilinx/Vivado/2018.3/include/ap_sysc"/>
                                     									
+                                    <listOptionValue builtIn="false" value="G:/Vivado_Projects/Zybo_Z7-20_OsuBot/VivadoHLS"/>
+                                    									
                                     <listOptionValue builtIn="false" value="G:/Xilinx/Vivado/2018.3/win64/tools/systemc/include"/>
                                     								
                                 </option>
@@ -92,6 +94,8 @@
                                     <listOptionValue builtIn="false" value="G:/Xilinx/Vivado/2018.3/win64/tools/auto_cc/include"/>
                                     									
                                     <listOptionValue builtIn="false" value="G:/Xilinx/Vivado/2018.3/include/ap_sysc"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="G:/Vivado_Projects/Zybo_Z7-20_OsuBot/VivadoHLS"/>
                                     									
                                     <listOptionValue builtIn="false" value="G:/Xilinx/Vivado/2018.3/win64/tools/systemc/include"/>
                                     								
@@ -263,6 +267,8 @@
                                     									
                                     <listOptionValue builtIn="false" value="G:/Xilinx/Vivado/2018.3/include/ap_sysc"/>
                                     									
+                                    <listOptionValue builtIn="false" value="G:/Vivado_Projects/Zybo_Z7-20_OsuBot/VivadoHLS"/>
+                                    									
                                     <listOptionValue builtIn="false" value="G:/Xilinx/Vivado/2018.3/win64/tools/systemc/include"/>
                                     								
                                 </option>
@@ -286,6 +292,8 @@
                                     <listOptionValue builtIn="false" value="G:/Xilinx/Vivado/2018.3/win64/tools/auto_cc/include"/>
                                     									
                                     <listOptionValue builtIn="false" value="G:/Xilinx/Vivado/2018.3/include/ap_sysc"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="G:/Vivado_Projects/Zybo_Z7-20_OsuBot/VivadoHLS"/>
                                     									
                                     <listOptionValue builtIn="false" value="G:/Xilinx/Vivado/2018.3/win64/tools/systemc/include"/>
                                     								

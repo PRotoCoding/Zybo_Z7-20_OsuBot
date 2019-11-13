@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <autopilotfilemapping:AutoPilotFileMapping xmlns:autopilotfilemapping="www.autoesl.com/autopilotfilemapping">
   <source>
-    <originFiles name="nodedetector.cpp" path="G:\Vivado_Projects\Zybo_Z7-20_OsuBot\VivadoHLS\NodeDetector\src\nodedetector.cpp"/>
     <originFiles name="nodedetector.h" path="G:\Vivado_Projects\Zybo_Z7-20_OsuBot\VivadoHLS\NodeDetector\src\nodedetector.h"/>
+    <originFiles name="nodedetector.cpp" path="G:\Vivado_Projects\Zybo_Z7-20_OsuBot\VivadoHLS\NodeDetector\src\nodedetector.cpp"/>
   </source>
   <testbench>
     <originFiles name="nodedetectorTest.cpp" path="G:\Vivado_Projects\Zybo_Z7-20_OsuBot\VivadoHLS\NodeDetector\src\nodedetectorTest.cpp"/>

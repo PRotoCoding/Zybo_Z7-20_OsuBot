@@ -2,36 +2,25 @@
 <vivadoHLSLog:LogRoot xmlns:vivadoHLSLog="www.xilinx.com/vivadoHLSLog">
   <errorLogs>
     <logs>
-      <synLog/>
-      <simLog/>
-      <mgLog/>
-      <packageLog/>
-      <csimLog/>
+      <csimLog>
+        <logs message="ERROR: [SIM 211-100] 'csim_design' failed: nonzero return value." projectName="NodeDetector" solutionName="SolutionWithPipelining" date="2019-11-13T12:29:17.045+0100"/>
+        <logs message="@E Simulation failed: Function 'main' returns nonzero value '1'." projectName="NodeDetector" solutionName="SolutionWithPipelining" date="2019-11-13T12:29:17.041+0100"/>
+        <logs message="Error: note detection failed (out: 0x60, outRef: 0x00)&#xD;&#xA;**********************************************&#xD;&#xA;FAIL: Output does not match the golden output!&#xD;&#xA;**********************************************" projectName="NodeDetector" solutionName="SolutionWithPipelining" date="2019-11-13T12:29:17.035+0100"/>
+        <logs message="Error: note detection failed (out: 0x60, outRef: 0x00)" projectName="NodeDetector" solutionName="SolutionWithPipelining" date="2019-11-13T12:29:17.023+0100"/>
+        <logs message="ERROR: [SIM 211-100] 'csim_design' failed: nonzero return value." projectName="NodeDetector" solutionName="SolutionWithPipelining" date="2019-11-13T12:23:49.684+0100"/>
+        <logs message="@E Simulation failed: Function 'main' returns nonzero value '1'." projectName="NodeDetector" solutionName="SolutionWithPipelining" date="2019-11-13T12:23:49.680+0100"/>
+        <logs message="Error: note detection failed (out: 0x30, outRef: 0x06)&#xD;&#xA;**********************************************&#xD;&#xA;FAIL: Output does not match the golden output!&#xD;&#xA;**********************************************" projectName="NodeDetector" solutionName="SolutionWithPipelining" date="2019-11-13T12:23:49.676+0100"/>
+        <logs message="Error: note detection failed (out: 0x30, outRef: 0x06)" projectName="NodeDetector" solutionName="SolutionWithPipelining" date="2019-11-13T12:23:49.666+0100"/>
+        <logs message="ERROR: [SIM 211-100] 'csim_design' failed: compilation error(s)." projectName="NodeDetector" solutionName="SolutionWithPipelining" date="2019-11-13T12:21:59.911+0100"/>
+        <logs message="ERROR: [SIM 211-100] 'csim_design' failed: nonzero return value." projectName="NodeDetector" solutionName="SolutionWithPipelining" date="2019-11-13T12:19:04.785+0100"/>
+        <logs message="@E Simulation failed: Function 'main' returns nonzero value '1'." projectName="NodeDetector" solutionName="SolutionWithPipelining" date="2019-11-13T12:19:04.781+0100"/>
+        <logs message="Error: note detection failed (out: 0x14, outRef: 0x00)&#xD;&#xA;**********************************************&#xD;&#xA;FAIL: Output does not match the golden output!&#xD;&#xA;**********************************************" projectName="NodeDetector" solutionName="SolutionWithPipelining" date="2019-11-13T12:19:04.775+0100"/>
+        <logs message="Error: note detection failed (out: 0x14, outRef: 0x00)" projectName="NodeDetector" solutionName="SolutionWithPipelining" date="2019-11-13T12:19:04.772+0100"/>
+      </csimLog>
     </logs>
   </errorLogs>
   <warningLogs>
     <logs>
-      <synLog>
-        <logs message="WARNING: [RTGEN 206-101] Port 'nodeDetector/out_1_V' has no fanin or fanout and is left dangling.&#xD;&#xA;               Please use C simulation to confirm this function argument can be read from or written to." projectName="NodeDetector" solutionName="SolutionWithPipelining" date="2019-11-13T00:31:50.605+0100" type="Warning"/>
-        <logs message="WARNING: [RTGEN 206-101] Port 'out_0_V' with mode 'ap_none' may require an associated data valid signal to correctly communicate with other blocks or a test bench; automatic C/RTL co-simulation may not be able to verify such a port." projectName="NodeDetector" solutionName="SolutionWithPipelining" date="2019-11-13T00:31:50.562+0100" type="Warning"/>
-        <logs message="WARNING: [SCHED 204-21] The critical path in module 'nodeDetector' consists of the following:&#xD;&#xA;&#x9;axis read on port 'inStream_V_data_V' (NodeDetector/src/nodedetector.cpp:41) [90]  (0 ns)&#xD;&#xA;&#x9;'icmp' operation ('tmp_1', NodeDetector/src/nodedetector.cpp:45) [98]  (0.959 ns)&#xD;&#xA;&#x9;'select' operation ('t.V', NodeDetector/src/nodedetector.cpp:45) [99]  (0.805 ns)&#xD;&#xA;&#x9;'icmp' operation ('tmp_6', NodeDetector/src/nodedetector.cpp:59) [110]  (2.43 ns)&#xD;&#xA;&#x9;'or' operation ('p_077_1_1', NodeDetector/src/nodedetector.cpp:59) [113]  (0 ns)&#xD;&#xA;&#x9;'and' operation ('p_077_2', NodeDetector/src/nodedetector.cpp:56) [114]  (0.978 ns)&#xD;&#xA;&#x9;'xor' operation ('p_081_2_not', NodeDetector/src/nodedetector.cpp:77) [115]  (0.978 ns)&#xD;&#xA;&#x9;'or' operation ('tmp2', NodeDetector/src/nodedetector.cpp:77) [120]  (0 ns)&#xD;&#xA;&#x9;'or' operation ('brmerge', NodeDetector/src/nodedetector.cpp:77) [121]  (0.978 ns)" projectName="NodeDetector" solutionName="SolutionWithPipelining" date="2019-11-13T00:31:50.232+0100" type="Warning"/>
-        <logs message="WARNING: [SCHED 204-21] Estimated clock period (7.127ns) exceeds the target (target clock period: 7.5ns, clock uncertainty: 0.938ns, effective delay budget: 6.562ns)." projectName="NodeDetector" solutionName="SolutionWithPipelining" date="2019-11-13T00:31:50.230+0100" type="Warning"/>
-        <logs message="WARNING: [SCHED 204-70] Cannot meet target clock period from 'icmp' operation ('tmp_1') to 'or' operation ('brmerge') (combination delay: 7.127 ns) to honor II or Latency constraint in region 'nodeDetector_pipelining'." projectName="NodeDetector" solutionName="SolutionWithPipelining" date="2019-11-13T00:31:50.229+0100" type="Warning"/>
-        <logs message="WARNING: [SCHED 204-68] The II Violation in module 'nodeDetector': Unable to enforce a carried dependence constraint (II = 6, distance = 1, offset = 1)&#xD;&#xA;   between wire write on port 'out_0_V' (NodeDetector/src/nodedetector.cpp:79) and wire read on port 'out_0_V' (NodeDetector/src/nodedetector.cpp:79)." projectName="NodeDetector" solutionName="SolutionWithPipelining" date="2019-11-13T00:31:50.197+0100" type="Warning"/>
-        <logs message="WARNING: [SCHED 204-68] The II Violation in module 'nodeDetector': Unable to enforce a carried dependence constraint (II = 5, distance = 1, offset = 1)&#xD;&#xA;   between wire write on port 'out_0_V' (NodeDetector/src/nodedetector.cpp:79) and wire read on port 'out_0_V' (NodeDetector/src/nodedetector.cpp:79)." projectName="NodeDetector" solutionName="SolutionWithPipelining" date="2019-11-13T00:31:50.194+0100" type="Warning"/>
-        <logs message="WARNING: [SCHED 204-68] The II Violation in module 'nodeDetector': Unable to enforce a carried dependence constraint (II = 4, distance = 1, offset = 1)&#xD;&#xA;   between wire write on port 'out_0_V' (NodeDetector/src/nodedetector.cpp:79) and wire read on port 'out_0_V' (NodeDetector/src/nodedetector.cpp:79)." projectName="NodeDetector" solutionName="SolutionWithPipelining" date="2019-11-13T00:31:50.192+0100" type="Warning"/>
-        <logs message="WARNING: [SCHED 204-68] The II Violation in module 'nodeDetector': Unable to enforce a carried dependence constraint (II = 3, distance = 1, offset = 1)&#xD;&#xA;   between wire write on port 'out_0_V' (NodeDetector/src/nodedetector.cpp:79) and wire read on port 'out_0_V' (NodeDetector/src/nodedetector.cpp:79)." projectName="NodeDetector" solutionName="SolutionWithPipelining" date="2019-11-13T00:31:50.152+0100" type="Warning"/>
-        <logs message="WARNING: [SCHED 204-68] The II Violation in module 'nodeDetector': Unable to enforce a carried dependence constraint (II = 2, distance = 1, offset = 1)&#xD;&#xA;   between wire write on port 'out_0_V' (NodeDetector/src/nodedetector.cpp:79) and wire read on port 'out_0_V' (NodeDetector/src/nodedetector.cpp:79)." projectName="NodeDetector" solutionName="SolutionWithPipelining" date="2019-11-13T00:31:50.134+0100" type="Warning"/>
-        <logs message="WARNING: [SCHED 204-68] The II Violation in module 'nodeDetector': Unable to enforce a carried dependence constraint (II = 1, distance = 1, offset = 1)&#xD;&#xA;   between wire write on port 'out_0_V' (NodeDetector/src/nodedetector.cpp:79) and wire read on port 'out_0_V' (NodeDetector/src/nodedetector.cpp:79)." projectName="NodeDetector" solutionName="SolutionWithPipelining" date="2019-11-13T00:31:50.129+0100" type="Warning"/>
-        <logs message="WARNING: [ANALYSIS 214-52] Found false intra dependency for variable 'out[1].V' (NodeDetector/src/nodedetector.cpp:13)." projectName="NodeDetector" solutionName="SolutionWithPipelining" date="2019-11-13T00:31:50.053+0100" type="Warning"/>
-        <logs message="WARNING: [ANALYSIS 214-52] Found false intra dependency for variable 'out[0].V' (NodeDetector/src/nodedetector.cpp:13)." projectName="NodeDetector" solutionName="SolutionWithPipelining" date="2019-11-13T00:31:49.850+0100" type="Warning"/>
-        <logs message="WARNING: [ANALYSIS 214-52] Found false inter dependency for variable 'out[1].V' (NodeDetector/src/nodedetector.cpp:13)." projectName="NodeDetector" solutionName="SolutionWithPipelining" date="2019-11-13T00:31:49.848+0100" type="Warning"/>
-        <logs message="WARNING: [ANALYSIS 214-52] Found false inter dependency for variable 'out[0].V' (NodeDetector/src/nodedetector.cpp:13)." projectName="NodeDetector" solutionName="SolutionWithPipelining" date="2019-11-13T00:31:49.846+0100" type="Warning"/>
-        <logs message="WARNING: [SYNCHK 200-23] NodeDetector/src/nodedetector.cpp:79: variable-indexed range selection may cause suboptimal QoR." projectName="NodeDetector" solutionName="SolutionWithPipelining" date="2019-11-13T00:31:49.175+0100" type="Warning"/>
-      </synLog>
-      <simLog/>
-      <mgLog/>
-      <packageLog/>
       <csimLog/>
     </logs>
   </warningLogs>
