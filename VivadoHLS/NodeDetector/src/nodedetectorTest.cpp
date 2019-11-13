@@ -22,6 +22,13 @@ int main() {
 	bool success = true;
 
 	ap_int<NUMBER_OF_NODELINES> outRef[MAX_NUM_OF_TESTS][NUMBER_OF_HORIZONTAL_LINES] = {{0x0A, 0x0A}, {0x06, 0x06}, {0x03, 0x03}, {0x14, 0x14}, {0x00, 0x00}};
+	bool refDetection[MAX_NUM_OF_TESTS][NUMBER_OF_HORIZONTAL_LINES][NUMBER_OF_NODELINES] = {
+			{{0, 1, 0, 1, 0, 0, 0}, {0, 1, 0, 1, 0, 0, 0}},
+			{{0, 1, 1, 0, 0, 0, 0}, {0, 1, 1, 0, 0, 0, 0}},
+			{{1, 1, 0, 0, 0, 0, 0}, {1, 1, 0, 0, 0, 0, 0}},
+			{{0, 0, 1, 0, 1, 0, 0}, {0, 0, 1, 0, 1, 0, 0}},
+			{{0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}},
+	};
 
 	ap_int<NUMBER_OF_NODELINES+1> enable = 0xFF;
 	ap_int<16> pos[NUMBER_OF_NODELINES] = {POSITION(6), POSITION(5), POSITION(4), POSITION(3), POSITION(2), POSITION(1), POSITION(0)};
@@ -30,7 +37,7 @@ int main() {
 	ap_int<16> horizontalPos[NUMBER_OF_HORIZONTAL_LINES] = {VERTICAL, VERTICAL + 1};
 
 	for(int testNumber = 0; testNumber < NUM_OF_TESTS; testNumber++) {
-		std::string fileName = "G:/Vivado_Projects/Zybo_Z7-20_OsuBot/VivadoHLS/NodeDetector/TestPictures/test";
+		std::string fileName = "../../../TestPictures/test";
 		fileName += std::to_string(testNumber);
 		fileName += ".jpg";
 
@@ -89,10 +96,15 @@ int main() {
 		// Check note detection
 		printf("\nTest %d\n", testNumber);
 		for(int i = 0; i < NUMBER_OF_HORIZONTAL_LINES; i++) {
-
 			for (int j = 0; j < NUMBER_OF_NODELINES; j++) {
+				if(out[i][j] != refDetection[testNumber][i][j]) {
+					printf("@E:");
+					success = false;
+				}
 				printf(" %d ", out[i][j]);
 			}
+			if(success == true) printf("| Correct");
+			else printf("| Incorrect");
 			printf("\n");
 			/*if(out[i] != outRef[testNumber][i]) {
 				success = false;
